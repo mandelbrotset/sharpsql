@@ -53,21 +53,6 @@ namespace SharpSql
         private static string GetOrderByPart<TEntity>(SelectQuery<TEntity> query, string alias)
         {
             return query.Order.ToSql();
-            //var result = new List<string>();
-
-            //foreach (var (property, order) in query.Order.Sortings)
-            //{
-            //    var propertyName = property.GetPropertyName();
-            //    var sortOrder = order == SortOrder.Descending ? " DESC" : string.Empty;
-            //    result.Add($"{alias}.{propertyName}{sortOrder}");
-            //}
-            
-            //if (!result.Any())
-            //{
-            //    return string.Empty;
-            //}
-
-            //return $" ORDER BY {string.Join(", ", result)}";
         }
 
         private static IList<string> GetJoinPart<TEntity>(SelectQuery<TEntity> query)

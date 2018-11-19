@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SharpSql;
+using SharpSql.Restriction;
 using SharpSqlTest.TestClasses;
 
 namespace SharpSqlTest
@@ -8,7 +9,7 @@ namespace SharpSqlTest
     public class RestrictionsTest
     {
         [TestMethod]
-        public void PropertyEqualsValueRestriction()
+        public void PropertyEqualsStringRestriction()
         {
             Order _order = null;
             var result = SelectBuilder.Select()
@@ -18,6 +19,19 @@ namespace SharpSqlTest
                 .ToSql();
 
             Assert.AreEqual("SELECT _order.Reference FROM Order _order WHERE _order.Release = 'hello'", result);
+        }
+
+        [TestMethod]
+        public void PropertyEqualsIntegerRestriction()
+        {
+            Order _order = null;
+            var result = SelectBuilder.Select()
+                .From(() => _order)
+                .WithColumns(x => x.Reference)
+                .Where(() => _order.Release).EqualTo(4).Build()
+                .ToSql();
+
+            Assert.AreEqual("SELECT _order.Reference FROM Order _order WHERE _order.Release = 4", result);
         }
 
         [TestMethod]
@@ -55,7 +69,7 @@ namespace SharpSqlTest
                 .WithColumns(x => x.Reference)
                 .Where(() => _order.Return).EqualTo("hello").And("hello2").EqualTo(() => _order.Release).Build()
                 .ToSql();
-            
+
             Assert.AreEqual("SELECT _order.Reference FROM Order _order WHERE _order.Return = 'hello' AND 'hello2' = _order.Release", result);
         }
     }

@@ -57,7 +57,7 @@ namespace SharpSql.Restriction
             RightChild = new RestrictionOperand<TEntity>(rightRestriction);
             return this;
         }
-
+        
         public ISelectQuery<TEntity> Build()
         {
             _query.Restriction = this;

@@ -32,6 +32,16 @@ namespace SharpSql.Restriction
             return _query;
         }
 
+        public IRestriction<TEntity> EqualTo(object operand)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IRestriction<TEntity> EqualTo(Expression<Func<object>> operand)
+        {
+            throw new NotImplementedException();
+        }
+
         public string ToSql()
         {
             return string.Empty;

@@ -24,7 +24,7 @@ namespace SharpSql
         ISqlElement Restriction { get; set; }
     }
 
-    public class SelectQuery<TEntity> : ISelectQuery<TEntity>
+    public class SelectQuery<TEntity> : ISelectQuery<TEntity>, IOrderedSelectQuery<TEntity>
     {
         public SelectQuery(Expression<Func<TEntity, object>>[] columns, Expression<Func<TEntity>> alias)
         {
@@ -64,7 +64,13 @@ namespace SharpSql
         public IOrderedSelectQuery<TEntity> OrderBy(Expression<Func<object>> property, SortOrder sortOrder = SortOrder.Ascending)
         {
             Order.AddOrderBy(property, sortOrder);
-            return new OrderedSelectQuery<TEntity>(this);
+            return this;
+        }
+
+        public IOrderedSelectQuery<TEntity> ThenBy(Expression<Func<object>> property, SortOrder sortOrder = SortOrder.Ascending)
+        {
+            OrderBy(property, sortOrder);
+            return this;
         }
 
         public string ToSql()

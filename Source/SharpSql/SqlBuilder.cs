@@ -42,12 +42,14 @@ namespace SharpSql
 
         private static string GetRestrictionsPart<TEntity>(SelectQuery<TEntity> query, string alias)
         {
-            if (query.Restriction is EmptyRestriction<TEntity>)
+            var sql = query.Restriction.ToSql();
+
+            if (string.IsNullOrWhiteSpace(sql))
             {
                 return string.Empty;
             }
 
-            return $" WHERE {query.Restriction.ToSql()}";
+            return $" WHERE {sql}";
         }
 
         private static string GetOrderByPart<TEntity>(SelectQuery<TEntity> query, string alias)

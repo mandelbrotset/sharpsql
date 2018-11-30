@@ -1,20 +1,20 @@
-﻿using SharpSql.Restriction;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using SharpSql.Restriction;
 
 namespace SharpSql.Update
 {
     public interface IUpdate<TEntity> : IUpdateBuilder<TEntity>, ISqlElement
     {
-        //IRestrictionBuilder<TEntity> Where(object operand);
-        //IRestrictionBuilder<TEntity> Where(Expression<Func<object>> operand);
+        IUpdate<TEntity> WithRestriction(IRestriction restriction);
     }
 
     public class Update<TEntity> : IUpdate<TEntity>
     {
         private readonly IList<Set<TEntity>> _sets;
+        public IRestriction Restriction { get; set; }
 
         public Update()
         {
@@ -30,19 +30,21 @@ namespace SharpSql.Update
         public string ToSql()
         {
             var tableName = typeof(TEntity).Name;
+            var sql = $"UPDATE {tableName} SET {string.Join(", ", _sets.Select(x => x.ToSql()))}";
+            
+            var restriction = Restriction.ToSql();
+            if (!string.IsNullOrWhiteSpace(restriction))
+            {
+                sql += $" WHERE {restriction}";
+            }
 
-
-            return $"UPDATE {tableName} SET {string.Join(", ", _sets.Select(x => x.ToSql()))}";
+            return sql;
         }
 
-        //public IRestrictionBuilder<TEntity> Where(object operand)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public IRestrictionBuilder<TEntity> Where(Expression<Func<object>> operand)
-        //{
-        //    throw new NotImplementedException();
-        //}
+        public IUpdate<TEntity> WithRestriction(IRestriction restriction)
+        {
+            Restriction = restriction;
+            return this;
+        }
     }
 }

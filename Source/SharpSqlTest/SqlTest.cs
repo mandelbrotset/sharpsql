@@ -11,7 +11,7 @@ namespace SharpSqlTest
         public void SelectWithColumnsInEntity()
         {
             Order _order = null;
-            var result = SelectBuilder.Select()
+            var result = QueryBuilder.Select()
                 .From(() => _order)
                 .WithColumnsInEntity()
                 .ToSql();
@@ -23,7 +23,7 @@ namespace SharpSqlTest
         public void SimpleSelect()
         {
             Order _order = null;
-            var result = SelectBuilder.Select()
+            var result = QueryBuilder.Select()
                 .From(() => _order)
                 .WithColumns(x => x.Reference, x => x.Release, x => x.Return)
                 .ToSql();

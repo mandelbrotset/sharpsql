@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 using SharpSql.Restriction.Operand;
+using SharpSql.Select;
 
 namespace SharpSql.Restriction
 {

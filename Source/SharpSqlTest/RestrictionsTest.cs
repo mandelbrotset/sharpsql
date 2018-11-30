@@ -12,7 +12,7 @@ namespace SharpSqlTest
         public void PropertyEqualsStringRestriction()
         {
             Order _order = null;
-            var result = SelectBuilder.Select()
+            var result = QueryBuilder.Select()
                 .From(() => _order)
                 .WithColumns(x => x.Reference)
                 .Where(() => _order.Release).EqualTo("hello").Build()
@@ -25,7 +25,7 @@ namespace SharpSqlTest
         public void PropertyEqualsIntegerRestriction()
         {
             Order _order = null;
-            var result = SelectBuilder.Select()
+            var result = QueryBuilder.Select()
                 .From(() => _order)
                 .WithColumns(x => x.Reference)
                 .Where(() => _order.Release).EqualTo(4).Build()
@@ -38,7 +38,7 @@ namespace SharpSqlTest
         public void PropertyEqualsPropertyRestriction()
         {
             Order _order = null;
-            var result = SelectBuilder.Select()
+            var result = QueryBuilder.Select()
                 .From(() => _order)
                 .WithColumns(x => x.Reference)
                 .Where(() => _order.Release).EqualTo(() => _order.Return).Build()
@@ -51,7 +51,7 @@ namespace SharpSqlTest
         public void ValueEqualsValueRestriction()
         {
             Order _order = null;
-            var result = SelectBuilder.Select()
+            var result = QueryBuilder.Select()
                 .From(() => _order)
                 .WithColumns(x => x.Reference)
                 .Where("hello1").EqualTo("hello2").Build()
@@ -64,7 +64,7 @@ namespace SharpSqlTest
         public void AndRestriction()
         {
             Order _order = null;
-            var result = SelectBuilder.Select()
+            var result = QueryBuilder.Select()
                 .From(() => _order)
                 .WithColumns(x => x.Reference)
                 .Where(() => _order.Return).EqualTo("hello").And("hello2").EqualTo(() => _order.Release).Build()

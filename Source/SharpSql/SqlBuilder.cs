@@ -1,5 +1,6 @@
 ﻿using SharpSql.Order;
 using SharpSql.Restriction;
+using SharpSql.Select;
 using System.Collections.Generic;
 using System.Linq;
 

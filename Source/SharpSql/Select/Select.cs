@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq.Expressions;
 
-namespace SharpSql
+namespace SharpSql.Select
 {
     public interface ISelect
     {

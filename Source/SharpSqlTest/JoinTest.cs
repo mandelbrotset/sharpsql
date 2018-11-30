@@ -13,7 +13,7 @@ namespace SharpSqlTest
         {
             Site _site = null;
             Order _order = null;
-            var result = SelectBuilder.Select()
+            var result = QueryBuilder.Select()
                 .From(() => _order)
                 .WithColumns(x => x.Reference, x => x.Release, x => x.Return)
                 .Join(() => _site, JoinType.Inner).On(() => _site.Id, () => _order.Return)
@@ -28,7 +28,7 @@ namespace SharpSqlTest
             Site _site1 = null;
             Site _site2 = null;
             Order _order1 = null;
-            var result = SelectBuilder.Select()
+            var result = QueryBuilder.Select()
                 .From(() => _order1)
                 .WithColumns(x => x.Reference, x => x.Release, x => x.Return)
                 .Join(() => _site1, JoinType.LeftOuter).On(() => _site1.Id, () => _order1.Return)

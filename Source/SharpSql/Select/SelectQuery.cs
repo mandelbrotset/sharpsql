@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-namespace SharpSql
+namespace SharpSql.Select
 {
     public interface ISelectQuery<TEntity> : ISqlElement
     {

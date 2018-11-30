@@ -12,7 +12,7 @@ namespace SharpSqlTest
         public void OrderBy()
         {
             Order _order = null;
-            var result = SelectBuilder.Select()
+            var result = QueryBuilder.Select()
                 .From(() => _order)
                 .WithColumns(x => x.Reference, x => x.Release, x => x.Return)
                 .OrderBy(() => _order.Reference)
@@ -25,7 +25,7 @@ namespace SharpSqlTest
         public void OrderByOrderBy()
         {
             Order _order = null;
-            var result = SelectBuilder.Select()
+            var result = QueryBuilder.Select()
                 .From(() => _order)
                 .WithColumns(x => x.Reference, x => x.Release, x => x.Return)
                 .OrderBy(() => _order.Return, SortOrder.Descending)
@@ -39,7 +39,7 @@ namespace SharpSqlTest
         public void OrderByThenBy()
         {
             Order _order = null;
-            var result = SelectBuilder.Select()
+            var result = QueryBuilder.Select()
                 .From(() => _order)
                 .WithColumns(x => x.Reference, x => x.Release, x => x.Return)
                 .OrderBy(() => _order.Return, SortOrder.Descending)

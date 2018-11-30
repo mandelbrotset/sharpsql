@@ -1,4 +1,5 @@
 ﻿using SharpSql.Restriction.Operand;
+using SharpSql.Select;
 using System;
 using System.Linq.Expressions;
 

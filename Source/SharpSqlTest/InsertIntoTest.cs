@@ -12,18 +12,21 @@ namespace SharpSqlTest
         private class Person
         {
             public int Age { get; set; }
-            public int Name { get; set; }
+            public string Name { get; set; }
         }
 
         [TestMethod]
         public void SimpleInsert()
         {
-            var result = QueryBuilder.InsertInto("Person")
-                .Columns()
-                .Values()
-                .ToSql();
+            var person = new Person
+            {
+                Age = 42,
+                Name = "Sven"
+            };
 
-            Assert.AreEqual("INSERT INTO Person", result);
+            var result = QueryBuilder.InsertInto(person).ToSql();
+
+            Assert.AreEqual("INSERT INTO Person (Age, Name) VALUES (42, 'Sven')", result);
         }
     }
 }

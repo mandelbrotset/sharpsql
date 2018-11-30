@@ -11,9 +11,14 @@ namespace SharpSql
             return new Select.Select();
         }
 
-        public static IInsertIntoColumnsBuilder InsertInto(string table)
+        //public static IInsertIntoColumnsBuilder InsertInto(string table)
+        //{
+        //    return new InsertIntoBuilder(table);
+        //}
+
+        public static IInsertInto<TEntity> InsertInto<TEntity>(TEntity value)
         {
-            return new InsertIntoBuilder(table);
+            return new InsertInto<TEntity>(value);
         }
 
         public static IUpdateBuilder<TEntity> Update<TEntity>()

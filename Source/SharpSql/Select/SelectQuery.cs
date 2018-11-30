@@ -9,19 +9,16 @@ namespace SharpSql.Select
 {
     public interface ISelectQuery<TEntity> : ISqlElement
     {
-        Expression<Func<TEntity, object>>[] Columns { get; }
         string Alias { get; }
         Expression<Func<TEntity>> AliasExpression { get; }
+        Expression<Func<TEntity, object>>[] Columns { get; }
         OrderBy<TEntity> Order { get; }
         IList<IJoin<TEntity>> Joins { get; }
-
-        IOrderedSelectQuery<TEntity> OrderBy(Expression<Func<object>> property, SortOrder sortOrder = SortOrder.Ascending);
+        IRestriction Restriction { get; set; }
 
         IJoin<TEntity> Join(Expression<Func<object>> joinAlias, JoinType joinType = JoinType.Inner);
-
-        IRestrictionBuilder<TEntity> Where(object operand);
-        IRestrictionBuilder<TEntity> Where(Expression<Func<object>> operand);
-        ISqlElement Restriction { get; set; }
+        ISelectQuery<TEntity> WithRestriction(IRestriction restriction);
+        IOrderedSelectQuery<TEntity> OrderBy(Expression<Func<object>> property, SortOrder sortOrder = SortOrder.Ascending);
     }
 
     public class SelectQuery<TEntity> : ISelectQuery<TEntity>, IOrderedSelectQuery<TEntity>
@@ -32,7 +29,7 @@ namespace SharpSql.Select
             var body = (MemberExpression)alias.Body;
             Alias = body.Member.Name;
             AliasExpression = alias;
-            Restriction = new EmptyRestriction<TEntity>(this);
+            Restriction = new EmptyRestriction();
             Order = new OrderBy<TEntity>(this);
             Joins = new List<IJoin<TEntity>>();
         }
@@ -52,7 +49,7 @@ namespace SharpSql.Select
         public Expression<Func<TEntity>> AliasExpression { get; }
         public OrderBy<TEntity> Order { get; private set; }
         public IList<IJoin<TEntity>> Joins { get; set; }
-        public ISqlElement Restriction { get; set; }
+        public IRestriction Restriction { get; set; }
 
         public IJoin<TEntity> Join(Expression<Func<object>> joinAlias, JoinType joinType = JoinType.Inner)
         {
@@ -78,14 +75,10 @@ namespace SharpSql.Select
             return SqlBuilder.ToSql(this);
         }
         
-        public IRestrictionBuilder<TEntity> Where(Expression<Func<object>> operand)
+        public ISelectQuery<TEntity> WithRestriction(IRestriction restriction)
         {
-            return new Restriction<TEntity>(operand, this);
-        }
-
-        public IRestrictionBuilder<TEntity> Where(object operand)
-        {
-            return new Restriction<TEntity>(operand, this);
+            Restriction = restriction;
+            return this;
         }
     }
 }

@@ -3,9 +3,9 @@ using System.Linq.Expressions;
 
 namespace SharpSql.Restriction
 {
-    public interface IRestrictionBuilder<TEntity>
+    public interface IRestrictionBuilder
     {
-        IRestriction<TEntity> EqualTo(object operand);
-        IRestriction<TEntity> EqualTo(Expression<Func<object>> operand);
+        IRestriction EqualTo(object value);
+        IRestriction EqualTo(Expression<Func<object>> property);
     }
 }

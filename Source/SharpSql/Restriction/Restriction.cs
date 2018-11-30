@@ -4,42 +4,38 @@ using SharpSql.Restriction.Operand;
 
 namespace SharpSql.Restriction
 {
-    public class Restriction<TEntity> : IRestriction<TEntity>, IRestrictionBuilder<TEntity>
+    public class Restriction : IRestriction, IRestrictionBuilder
     {
-        private Operator _operator;
         private IOperand _leftOperand;
         private IOperand _rightOperand;
-        private ISelectQuery<TEntity> _query;
+        private Operator _operator;
 
-        public Restriction(IOperand leftOperand, ISelectQuery<TEntity> query)
+        private Restriction(IOperand leftOperand)
         {
-            _query = query;
             _leftOperand = leftOperand;
         }
 
-        public Restriction(object leftOperand, ISelectQuery<TEntity> query)
+        public static IRestrictionBuilder Where(object value)
         {
-            _query = query;
-            _leftOperand = new ValueOperand(leftOperand);
+            return new Restriction(new ValueOperand(value));
         }
 
-        public Restriction(Expression<Func<object>> leftOperand, ISelectQuery<TEntity> query)
+        public static IRestrictionBuilder Where(Expression<Func<object>> property)
         {
-            _query = query;
-            _leftOperand = new PropertyOperand(leftOperand);
+            return new Restriction(new PropertyOperand(property));
         }
-        
-        public IRestriction<TEntity> EqualTo(Expression<Func<object>> operand)
+
+        public IRestriction EqualTo(object value)
         {
             _operator = Operator.Equals;
-            _rightOperand = new PropertyOperand(operand);
+            _rightOperand = new ValueOperand(value);
             return this;
         }
 
-        public IRestriction<TEntity> EqualTo(object operand)
+        public IRestriction EqualTo(Expression<Func<object>> property)
         {
             _operator = Operator.Equals;
-            _rightOperand = new ValueOperand(operand);
+            _rightOperand = new PropertyOperand(property);
             return this;
         }
 
@@ -48,12 +44,6 @@ namespace SharpSql.Restriction
             return $"{_leftOperand.ToSql()} {GetOperator()} {_rightOperand.ToSql()}";
         }
 
-        public ISelectQuery<TEntity> Build()
-        {
-            _query.Restriction = this;
-            return _query;
-        }
-        
         private string GetOperator()
         {
             switch (_operator)
@@ -69,21 +59,6 @@ namespace SharpSql.Restriction
             }
 
             throw new NotImplementedException();
-        }
-
-        public ISelectQuery<TEntity> And(IRestriction<TEntity> restriction)
-        {
-            return ParentRestriction<TEntity>.CreateParentRestriction(this, LogicOperator.And, _query, restriction);
-        }
-
-        public IRestrictionBuilder<TEntity> And(Expression<Func<object>> operand)
-        {
-            return new ParentRestriction<TEntity>(this, LogicOperator.And, _query, operand);
-        }
-
-        public IRestrictionBuilder<TEntity> And(object operand)
-        {
-            return new ParentRestriction<TEntity>(this, LogicOperator.And, _query, operand);
         }
     }
 }
